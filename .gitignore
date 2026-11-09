@@ -1,0 +1,17 @@
+
+# Credenciais e configurações privadas
+.env
+.env.*
+!.env.example
+cookies.txt
+cookies-admin.txt
+
+# Dependências
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Arquivos do sistema
+.DS_Store

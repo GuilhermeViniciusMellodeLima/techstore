@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Painel de controle administrativo da TechStore." />
+  <title>Painel Administrativo — TechStore</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/checkout.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ═══ SIDEBAR LATERAL ═══════════════════════════════════════════════════ -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="admin-sidebar__header">
+      <a href="/" class="header__logo" aria-label="TechStore - Início">
+        <span class="logo__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="#2563EB"/>
+            <path d="M7 10h14M7 14h9M7 18h11" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="logo__text">Tech<strong>Store</strong></span>
+      </a>
+      <span class="admin-badge">Admin</span>
+    </div>
+
+    <nav class="admin-nav" aria-label="Navegação administrativa">
+      <button class="admin-nav__link active" data-tab="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="admin-nav__link" data-tab="produtos">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        <span>Produtos</span>
+      </button>
+
+      <button class="admin-nav__link" data-tab="entregas">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        <span>Pedidos &amp; Entregas</span>
+      </button>
+    </nav>
+
+    <div class="admin-sidebar__footer">
+      <a href="/" class="admin-nav__link" style="color: var(--clr-text-muted);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Voltar à Loja</span>
+      </a>
+
+      <button class="admin-nav__link" id="btn-admin-logout" style="color: var(--clr-error);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Sair do Painel</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ CONTEÚDO PRINCIPAL ════════════════════════════════════════════════ -->
+  <div class="admin-main">
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div style="display: flex; align-items: center; gap: var(--sp-4);">
+        <button class="admin-menu-toggle" id="btn-sidebar-toggle" aria-label="Alternar menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="admin-topbar__title" id="page-title">Dashboard</h1>
+      </div>
+
+      <div class="admin-topbar__actions">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="user-avatar" id="admin-user-avatar" style="width: 32px; height: 32px;">A</span>
+          <span style="font-size: var(--text-sm); font-weight: 600; color: var(--clr-white);" id="admin-user-name">Administrador</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo Dinâmico por Aba -->
+    <main class="admin-content">
+
+      <!-- ── ABA 1: DASHBOARD ─────────────────────────────────────────────── -->
+      <section class="admin-tab active" id="tab-dashboard">
+        <!-- Grid de Indicadores (KPIs) -->
+        <div class="kpi-grid">
+          <div class="kpi-card kpi-card--success">
+            <div class="kpi-card__header">
+              <span>Faturamento Total</span>
+              <div class="kpi-card__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-card__value" id="kpi-vendas">R$ 0,00</div>
+            <span class="kpi-card__sub">Pedidos pagos, enviados e entregues</span>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-card__header">
+              <span>Total de Pedidos</span>
+              <div class="kpi-card__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-card__value" id="kpi-pedidos">0</div>
+            <span class="kpi-card__sub" id="kpi-pedidos-detalhe">0 pendentes · 0 enviados · 0 entregues</span>
+          </div>
+
+          <div class="kpi-card kpi-card--purple">
+            <div class="kpi-card__header">
+              <span>Total de Clientes</span>
+              <div class="kpi-card__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-card__value" id="kpi-clientes">0</div>
+            <span class="kpi-card__sub">Usuários registrados como clientes</span>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-card__header">
+              <span>Produtos Ativos</span>
+              <div class="kpi-card__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-card__value" id="kpi-produtos">0</div>
+            <span class="kpi-card__sub">Catálogo disponível na loja</span>
+          </div>
+
+          <div class="kpi-card kpi-card--warning">
+            <div class="kpi-card__header">
+              <span>Entregas Pendentes</span>
+              <div class="kpi-card__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-card__value" id="kpi-entregas-pendentes">0</div>
+            <span class="kpi-card__sub">Aguardando separação ou preparação</span>
+          </div>
+        </div>
+
+        <!-- Pedidos Recentes -->
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h2 class="admin-card__title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Últimos Pedidos Registrados
+            </h2>
+            <button class="btn btn--ghost btn--sm" id="btn-ver-todas-entregas">Ver todas entregas →</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table" aria-label="Pedidos recentes">
+              <thead>
+                <tr>
+                  <th>ID Pedido</th>
+                  <th>Cliente</th>
+                  <th>Valor Total</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recentes-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--clr-text-muted);">Carregando dados...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ABA 2: PRODUTOS ──────────────────────────────────────────────── -->
+      <section class="admin-tab" id="tab-produtos">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <div style="display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;">
+              <h2 class="admin-card__title">Gestão do Catálogo</h2>
+              <div class="search-box" style="margin: 0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="search" id="busca-produtos-admin" class="search-box__input" placeholder="Buscar por nome..." style="width: 220px;" />
+              </div>
+            </div>
+            <button class="btn btn--primary btn--sm" id="btn-novo-produto">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Cadastrar Produto
+            </button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" aria-label="Tabela de produtos">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Produto</th>
+                  <th>Descrição</th>
+                  <th>Preço</th>
+                  <th>Estoque</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="produtos-admin-tbody">
+                <tr><td colspan="7" style="text-align: center; color: var(--clr-text-muted);">Carregando catálogo...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ABA 3: ENTREGAS & PEDIDOS ────────────────────────────────────── -->
+      <section class="admin-tab" id="tab-entregas">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h2 class="admin-card__title">Gestão de Logística &amp; Entregas</h2>
+            <button class="btn btn--ghost btn--sm" id="btn-recarregar-entregas">Atualizar Lista</button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" aria-label="Tabela de entregas">
+              <thead>
+                <tr>
+                  <th>ID Entrega</th>
+                  <th>Pedido #</th>
+                  <th>Cliente ID</th>
+                  <th>Valor Total</th>
+                  <th>Status Pedido</th>
+                  <th>Status Entrega</th>
+                  <th>Transportadora</th>
+                  <th>Cód. Rastreio</th>
+                  <th>Datas</th>
+                  <th style="text-align: right;">Ação</th>
+                </tr>
+              </thead>
+              <tbody id="entregas-admin-tbody">
+                <tr><td colspan="10" style="text-align: center; color: var(--clr-text-muted);">Carregando entregas...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══ MODAIS DE GESTÃO ═════════════════════════════════════════════════ -->
+
+  <!-- Modal: Cadastrar / Editar Produto -->
+  <div class="admin-modal-backdrop" id="modal-produto" role="dialog" aria-modal="true" aria-labelledby="modal-produto-title">
+    <div class="admin-modal-box">
+      <div class="admin-modal__header">
+        <h2 class="admin-modal__title" id="modal-produto-title">Cadastrar Novo Produto</h2>
+        <button class="btn btn--ghost btn--sm btn--icon" id="btn-fechar-modal-produto" aria-label="Fechar">✕</button>
+      </div>
+
+      <form id="form-produto" novalidate>
+        <input type="hidden" id="prod-id" value="" />
+
+        <div class="form-group" style="margin-bottom: var(--sp-4);">
+          <label class="form-label" for="prod-nome">Nome do Produto</label>
+          <input type="text" id="prod-nome" class="form-input" placeholder="Ex: Headset Gamer 7.1" required />
+          <span class="form-error" id="err-prod-nome"></span>
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--sp-4);">
+          <label class="form-label" for="prod-descricao">Descrição</label>
+          <textarea id="prod-descricao" class="form-input" rows="3" placeholder="Detalhes técnicos, acabamento e características"></textarea>
+        </div>
+
+        <div class="form-grid-2" style="margin-bottom: var(--sp-6);">
+          <div class="form-group">
+            <label class="form-label" for="prod-preco">Preço (R$)</label>
+            <input type="number" id="prod-preco" class="form-input" placeholder="199.90" step="0.01" min="0.01" required />
+            <span class="form-error" id="err-prod-preco"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="prod-estoque">Estoque Inicial / Atual</label>
+            <input type="number" id="prod-estoque" class="form-input" placeholder="10" min="0" step="1" required />
+            <span class="form-error" id="err-prod-estoque"></span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: var(--sp-3);">
+          <button type="button" class="btn btn--ghost" id="btn-cancelar-modal-produto">Cancelar</button>
+          <button type="submit" class="btn btn--primary" id="btn-salvar-produto">Salvar Produto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Atualizar Logística da Entrega -->
+  <div class="admin-modal-backdrop" id="modal-entrega" role="dialog" aria-modal="true" aria-labelledby="modal-entrega-title">
+    <div class="admin-modal-box">
+      <div class="admin-modal__header">
+        <h2 class="admin-modal__title" id="modal-entrega-title">Atualizar Logística da Entrega</h2>
+        <button class="btn btn--ghost btn--sm btn--icon" id="btn-fechar-modal-entrega" aria-label="Fechar">✕</button>
+      </div>
+
+      <form id="form-entrega" novalidate>
+        <input type="hidden" id="entrega-id" value="" />
+
+        <div class="form-group" style="margin-bottom: var(--sp-4);">
+          <label class="form-label" for="entrega-status">Status da Entrega</label>
+          <select id="entrega-status" class="form-input" required>
+            <option value="aguardando">Aguardando</option>
+            <option value="preparando">Preparando</option>
+            <option value="em_transito">Em trânsito (atualiza pedido para 'enviado')</option>
+            <option value="entregue">Entregue (atualiza pedido para 'entregue')</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--sp-4);">
+          <label class="form-label" for="entrega-transportadora">Transportadora</label>
+          <input type="text" id="entrega-transportadora" class="form-input" placeholder="Ex: Correios, Loggi, Jadlog" maxlength="100" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--sp-6);">
+          <label class="form-label" for="entrega-rastreio">Código de Rastreamento</label>
+          <input type="text" id="entrega-rastreio" class="form-input" placeholder="Ex: BR123456789XP" maxlength="100" />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: var(--sp-3);">
+          <button type="button" class="btn btn--ghost" id="btn-cancelar-modal-entrega">Cancelar</button>
+          <button type="submit" class="btn btn--primary" id="btn-salvar-entrega">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js" defer></script>
+</body>
+</html>

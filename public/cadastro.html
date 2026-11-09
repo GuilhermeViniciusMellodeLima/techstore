@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Crie sua conta na TechStore e compre com facilidade." />
+  <title>Criar Conta — TechStore</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <!-- Background decorativo -->
+  <div class="auth-bg" aria-hidden="true">
+    <div class="auth-bg__grid"></div>
+    <div class="auth-bg__glow auth-bg__glow--1"></div>
+    <div class="auth-bg__glow auth-bg__glow--2"></div>
+  </div>
+
+  <!-- Voltar para loja -->
+  <a href="/" class="auth-back" aria-label="Voltar para a loja">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Voltar à loja
+  </a>
+
+  <main class="auth-main">
+    <div class="auth-card auth-card--wide" role="main">
+
+      <!-- Logo -->
+      <a href="/" class="auth-logo" aria-label="TechStore - Ir para a página inicial">
+        <span class="logo__icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="#2563EB"/>
+            <path d="M7 10h14M7 14h9M7 18h11" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="logo__text">Tech<strong>Store</strong></span>
+      </a>
+
+      <!-- Cabeçalho -->
+      <header class="auth-card__header">
+        <h1 class="auth-card__title">Criar sua conta</h1>
+        <p class="auth-card__subtitle">Preencha os dados abaixo para começar</p>
+      </header>
+
+      <!-- Alerta de feedback -->
+      <div class="auth-alert auth-alert--hidden" id="auth-alert" role="alert" aria-live="assertive"></div>
+
+      <!-- Formulário de cadastro -->
+      <form class="auth-form" id="cadastro-form" novalidate autocomplete="on">
+
+        <!-- Nome completo -->
+        <div class="form-group" id="group-nome">
+          <label class="form-label" for="cad-nome">Nome completo</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              type="text"
+              id="cad-nome"
+              name="nome"
+              class="form-input"
+              placeholder="João da Silva"
+              autocomplete="name"
+              required
+              aria-required="true"
+              aria-describedby="nome-error"
+              minlength="3"
+              maxlength="120"
+            />
+          </div>
+          <span class="form-error" id="nome-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- CPF -->
+        <div class="form-group" id="group-cpf">
+          <label class="form-label" for="cad-cpf">CPF</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/>
+            </svg>
+            <input
+              type="text"
+              id="cad-cpf"
+              name="cpf"
+              class="form-input"
+              placeholder="000.000.000-00"
+              autocomplete="off"
+              inputmode="numeric"
+              required
+              aria-required="true"
+              aria-describedby="cpf-error"
+              maxlength="14"
+            />
+          </div>
+          <span class="form-error" id="cpf-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- E-mail -->
+        <div class="form-group" id="group-email">
+          <label class="form-label" for="cad-email">E-mail</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input
+              type="email"
+              id="cad-email"
+              name="email"
+              class="form-input"
+              placeholder="seu@email.com"
+              autocomplete="email"
+              inputmode="email"
+              required
+              aria-required="true"
+              aria-describedby="email-error"
+            />
+          </div>
+          <span class="form-error" id="email-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- Telefone -->
+        <div class="form-group" id="group-telefone">
+          <label class="form-label" for="cad-telefone">Telefone / WhatsApp</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.56a16 16 0 0 0 6.29 6.29l1.62-1.62a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <input
+              type="tel"
+              id="cad-telefone"
+              name="telefone"
+              class="form-input"
+              placeholder="(11) 90000-0000"
+              autocomplete="tel"
+              inputmode="tel"
+              required
+              aria-required="true"
+              aria-describedby="telefone-error"
+              maxlength="20"
+            />
+          </div>
+          <span class="form-error" id="telefone-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- Senha -->
+        <div class="form-group" id="group-senha">
+          <label class="form-label" for="cad-senha">Senha</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              type="password"
+              id="cad-senha"
+              name="senha"
+              class="form-input form-input--password"
+              placeholder="Mínimo 8 caracteres"
+              autocomplete="new-password"
+              required
+              aria-required="true"
+              aria-describedby="senha-error senha-hint"
+              minlength="8"
+            />
+            <button type="button" class="form-pwd-toggle" id="toggle-senha" aria-label="Mostrar senha" tabindex="0">
+              <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+          <span class="form-error" id="senha-error" role="alert" aria-live="polite"></span>
+
+          <!-- Medidor de força da senha -->
+          <div class="pwd-strength" id="pwd-strength" aria-hidden="true">
+            <div class="pwd-strength__bar">
+              <span class="pwd-strength__fill" id="pwd-strength-fill"></span>
+            </div>
+            <span class="pwd-strength__label" id="pwd-strength-label"></span>
+          </div>
+        </div>
+
+        <!-- Confirmar senha -->
+        <div class="form-group" id="group-confirmar">
+          <label class="form-label" for="cad-confirmar">Confirmar senha</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              type="password"
+              id="cad-confirmar"
+              name="confirmar"
+              class="form-input form-input--password"
+              placeholder="Repita a senha"
+              autocomplete="new-password"
+              required
+              aria-required="true"
+              aria-describedby="confirmar-error"
+              minlength="8"
+            />
+            <button type="button" class="form-pwd-toggle" id="toggle-confirmar" aria-label="Mostrar confirmação de senha" tabindex="0">
+              <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+          <span class="form-error" id="confirmar-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- Termos -->
+        <div class="form-group form-group--checkbox" id="group-termos">
+          <label class="form-checkbox" for="cad-termos">
+            <input
+              type="checkbox"
+              id="cad-termos"
+              name="termos"
+              required
+              aria-required="true"
+              aria-describedby="termos-error"
+            />
+            <span class="form-checkbox__box" aria-hidden="true"></span>
+            <span>Concordo com os <a href="#" class="form-checkbox__link">Termos de Uso</a> e a <a href="#" class="form-checkbox__link">Política de Privacidade</a></span>
+          </label>
+          <span class="form-error" id="termos-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full btn--lg auth-submit" id="btn-cadastro-submit">
+          <span class="btn-label">Criar conta</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+
+      </form>
+
+      <!-- Link para login -->
+      <p class="auth-switch">
+        Já tem conta?
+        <a href="/login.html" class="auth-switch__link">Entrar agora</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script src="/js/auth.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.initCadastroPage();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,628 @@
+/* ============================================================
+   TechStore — Auth Styles
+   Login · Cadastro · User menu · Session UI
+   ============================================================ */
+
+/* ── 1. Auth Page Layout ─────────────────────────────────────── */
+.auth-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background decorativo */
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black, transparent);
+}
+
+.auth-bg__glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+}
+
+.auth-bg__glow--1 {
+  width: 500px;
+  height: 400px;
+  top: -10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(37,99,235,0.14) 0%, transparent 70%);
+  animation: auth-glow-1 10s ease-in-out infinite;
+}
+
+.auth-bg__glow--2 {
+  width: 400px;
+  height: 300px;
+  bottom: -5%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(96,165,250,0.08) 0%, transparent 70%);
+  animation: auth-glow-2 13s ease-in-out infinite;
+}
+
+@keyframes auth-glow-1 {
+  0%, 100% { transform: translate(0, 0);     }
+  50%       { transform: translate(-20px, 20px); }
+}
+
+@keyframes auth-glow-2 {
+  0%, 100% { transform: translate(0, 0);     }
+  50%       { transform: translate(20px, -20px); }
+}
+
+/* ── 2. Back Link ────────────────────────────────────────────── */
+.auth-back {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.5rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  transition: color 200ms;
+  text-decoration: none;
+}
+
+.auth-back:hover { color: var(--clr-text); }
+
+/* ── 3. Main Container ───────────────────────────────────────── */
+.auth-main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.25rem 2.5rem;
+}
+
+/* ── 4. Auth Card ────────────────────────────────────────────── */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-2);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 2.25rem;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 60px rgba(37,99,235,0.07);
+  animation: card-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.auth-card--wide { max-width: 520px; }
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ── 5. Auth Logo ────────────────────────────────────────────── */
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+  text-decoration: none;
+}
+
+.auth-logo .logo__text {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--clr-white);
+  letter-spacing: -0.02em;
+}
+
+.auth-logo .logo__text strong { font-weight: 700; }
+
+/* ── 6. Card Header ──────────────────────────────────────────── */
+.auth-card__header {
+  margin-bottom: 1.75rem;
+}
+
+.auth-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-white);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.375rem;
+}
+
+.auth-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+}
+
+/* ── 7. Alert ────────────────────────────────────────────────── */
+.auth-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+  animation: alert-in 0.25s ease both;
+}
+
+@keyframes alert-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-alert--hidden {
+  display: none !important;
+}
+
+.auth-alert--error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+}
+
+.auth-alert--success {
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #86efac;
+}
+
+/* ── 8. Form Base ────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── 9. Form Group ───────────────────────────────────────────── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-group--checkbox {
+  gap: 0.25rem;
+}
+
+/* Error state */
+.form-group--error .form-input {
+  border-color: rgba(239,68,68,0.6);
+  background: rgba(239,68,68,0.04);
+}
+
+.form-group--error .form-input:focus {
+  border-color: var(--clr-error);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}
+
+/* ── 10. Form Label ──────────────────────────────────────────── */
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  letter-spacing: 0.01em;
+}
+
+/* ── 11. Form Input Wrap ─────────────────────────────────────── */
+.form-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--clr-text-faint);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ── 12. Form Input ──────────────────────────────────────────── */
+.form-input {
+  width: 100%;
+  padding: 0.65rem 0.875rem 0.65rem 2.5rem;
+  background: var(--clr-surface-2);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  color: var(--clr-text);
+  font-size: 0.9375rem;
+  line-height: 1;
+  transition: border-color 180ms, box-shadow 180ms, background 180ms;
+  outline: none;
+}
+
+.form-input::placeholder { color: var(--clr-text-faint); }
+
+.form-input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px var(--clr-accent-muted);
+  background: rgba(37,99,235,0.03);
+}
+
+/* Campo com ícone à direita (senha toggle) */
+.form-input--password {
+  padding-right: 2.75rem;
+}
+
+/* ── 13. Password Toggle ─────────────────────────────────────── */
+.form-pwd-toggle {
+  position: absolute;
+  right: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  color: var(--clr-text-faint);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 150ms, background 150ms;
+}
+
+.form-pwd-toggle:hover {
+  color: var(--clr-text-muted);
+  background: var(--clr-surface-3);
+}
+
+/* ── 14. Form Error ──────────────────────────────────────────── */
+.form-error {
+  font-size: 0.75rem;
+  color: #fca5a5;
+  font-weight: 500;
+  min-height: 1em;
+  display: block;
+}
+
+/* ── 15. Password Strength Meter ─────────────────────────────── */
+.pwd-strength {
+  display: none;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+}
+
+.pwd-strength__bar {
+  flex: 1;
+  height: 4px;
+  background: var(--clr-surface-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pwd-strength__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.pwd-strength__fill.strength--1 { background: var(--clr-error);   }
+.pwd-strength__fill.strength--2 { background: var(--clr-warning);  }
+.pwd-strength__fill.strength--3 { background: #84cc16;             }
+.pwd-strength__fill.strength--4 { background: var(--clr-success);  }
+
+.pwd-strength__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ── 16. Checkbox ────────────────────────────────────────────── */
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  line-height: 1.5;
+}
+
+.form-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.form-checkbox__box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border: 1.5px solid var(--clr-border-2);
+  border-radius: 4px;
+  background: var(--clr-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 150ms, background 150ms;
+}
+
+.form-checkbox input:checked + .form-checkbox__box {
+  background: var(--clr-accent);
+  border-color: var(--clr-accent);
+}
+
+.form-checkbox input:checked + .form-checkbox__box::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.form-checkbox:hover .form-checkbox__box {
+  border-color: var(--clr-accent);
+}
+
+.form-checkbox input:focus-visible + .form-checkbox__box {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 2px;
+}
+
+.form-checkbox__link {
+  color: var(--clr-accent);
+  text-decoration: underline;
+}
+
+.form-checkbox__link:hover { color: var(--clr-accent-h); }
+
+/* ── 17. Submit Button States ────────────────────────────────── */
+.auth-submit {
+  margin-top: 0.5rem;
+  position: relative;
+  transition: background 200ms, box-shadow 200ms, transform 100ms, opacity 200ms;
+}
+
+.btn--loading {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.btn-label {
+  transition: opacity 200ms;
+}
+
+/* Spinner dentro do botão */
+.btn-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: none;
+}
+
+.btn--loading .btn-spinner {
+  opacity: 1;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ── 18. Divider ─────────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  color: var(--clr-text-faint);
+  font-size: 0.75rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--clr-border);
+}
+
+/* ── 19. Auth Switch ─────────────────────────────────────────── */
+.auth-switch {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+  margin-top: 0.25rem;
+}
+
+.auth-switch__link {
+  color: var(--clr-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.auth-switch__link:hover { color: var(--clr-accent-h); text-decoration: underline; }
+
+/* ── 20. User Menu (Header) ──────────────────────────────────── */
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.625rem;
+}
+
+.user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--clr-accent), #60a5fa);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.user-menu__name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 21. User Dropdown ───────────────────────────────────────── */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border-2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 150;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 180ms var(--ease-out),
+              transform 180ms var(--ease-out);
+  overflow: hidden;
+}
+
+.user-dropdown.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.user-dropdown__info {
+  padding: 0.875rem 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.user-dropdown__name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-white);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-dropdown__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  width: fit-content;
+}
+
+.badge--cliente {
+  background: rgba(37,99,235,0.15);
+  color: #93c5fd;
+}
+
+.badge--admin {
+  background: rgba(245,158,11,0.15);
+  color: #fcd34d;
+}
+
+.user-dropdown__divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--clr-border);
+}
+
+.user-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 150ms, color 150ms;
+}
+
+.user-dropdown__item:hover {
+  background: var(--clr-surface-3);
+  color: var(--clr-text);
+}
+
+.user-dropdown__item--danger { color: #fca5a5; }
+
+.user-dropdown__item--danger:hover {
+  background: rgba(239,68,68,0.1);
+  color: var(--clr-error);
+}
+
+/* ── 22. Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-main {
+    padding: 4.5rem 1rem 2rem;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .auth-back {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .user-menu__name { max-width: 72px; }
+}
+
+@media (max-width: 360px) {
+  .auth-card { padding: 1.5rem 1rem; }
+}
