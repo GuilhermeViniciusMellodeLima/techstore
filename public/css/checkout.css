@@ -489,3 +489,132 @@
   color: var(--clr-white);
   margin-top: 2px;
 }
+
+/* ============================================================
+   8. Melhorias do Checkout — Endereço e Pagamento Simulado
+   ============================================================ */
+
+/* Formulário de endereço */
+#form-endereco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+#form-endereco select,
+#form-endereco input {
+  width: 100%;
+  max-width: 100%;
+}
+
+#form-endereco select {
+  cursor: pointer;
+}
+
+#form-endereco select option {
+  background: var(--clr-surface);
+  color: var(--clr-white);
+}
+
+/* Status da seleção de endereço */
+#address-selection-status {
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  background: var(--clr-surface-2);
+  color: var(--clr-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* Botões de endereço */
+#btn-usar-endereco,
+#btn-salvar-endereco {
+  margin-top: var(--sp-3);
+}
+
+/* Formulários de pagamento */
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+
+.payment-form .form-grid-2 {
+  width: 100%;
+}
+
+/* Avisos de simulação */
+.demo-warning {
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md);
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--clr-warning);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  margin-bottom: var(--sp-4);
+}
+
+/* Cartões fictícios para testes */
+.demo-card-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  margin-top: var(--sp-2);
+  border: 1px dashed var(--clr-border-2);
+  border-radius: var(--radius-md);
+  background: var(--clr-surface);
+  font-size: var(--text-sm);
+  color: var(--clr-text-muted);
+}
+
+.demo-card-numbers strong {
+  color: var(--clr-white);
+}
+
+.demo-card-numbers code {
+  color: var(--clr-accent-h);
+  font-family: monospace;
+  user-select: all;
+}
+
+/* Chave Pix fictícia */
+.demo-pix-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  margin-top: var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  background: var(--clr-surface);
+}
+
+.demo-pix-key code {
+  color: var(--clr-accent-h);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .checkout-card {
+    padding: var(--sp-4);
+  }
+
+  .demo-pix-key {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .order-card__meta {
+    grid-template-columns: 1fr;
+  }
+}
+

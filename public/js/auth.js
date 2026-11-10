@@ -537,10 +537,29 @@ function initCadastroPage() {
 
   // Máscaras dinâmicas
   cpfEl?.addEventListener('input', (e) => {
-    const pos = e.target.selectionStart;
-    e.target.value = maskCPF(e.target.value);
-    // Reposiciona cursor aproximadamente
-    try { e.target.setSelectionRange(pos, pos); } catch {}
+    const input = e.target;
+    const posicao = input.selectionStart ?? input.value.length;
+
+    // Conta quantos números existem antes do cursor
+    const digitosAntes = onlyDigits(input.value.slice(0, posicao)).length;
+
+    // Aplica a máscara
+    input.value = maskCPF(input.value);
+
+    // Reposiciona o cursor considerando os caracteres inseridos
+    let novaPosicao = 0;
+    let digitosContados = 0;
+
+    while (novaPosicao < input.value.length && digitosContados < digitosAntes) {
+      if (/\d/.test(input.value[novaPosicao])) {
+        digitosContados++;
+      }
+      novaPosicao++;
+    }
+
+    try {
+      input.setSelectionRange(novaPosicao, novaPosicao);
+    } catch {}
   });
 
   telefoneEl?.addEventListener('input', (e) => {

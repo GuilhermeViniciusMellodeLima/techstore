@@ -1,4 +1,3 @@
-
 # Credenciais e configurações privadas
 .env
 .env.*
@@ -9,9 +8,12 @@ cookies-admin.txt
 # Dependências
 node_modules/
 
-# Logs
+# Logs e execução
 *.log
 npm-debug.log*
+logs/
+.lab-generator.pid
 
 # Arquivos do sistema
 .DS_Store
+*.bak

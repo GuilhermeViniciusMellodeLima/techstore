@@ -2,17 +2,78 @@
 const pool = require('../config/database');
 const crypto = require('crypto');
 
-// Criar pedido
+const UFS = [
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
+    'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
+    'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+];
+
+function validarEndereco(endereco) {
+    if (!endereco || typeof endereco !== 'object') {
+        return null;
+    }
+
+    const cep = String(endereco.cep || '').replace(/\D/g, '');
+    const estado = String(endereco.estado || '').trim().toUpperCase();
+    const cidade = String(endereco.cidade || '').trim();
+    const rua = String(endereco.rua || '').trim();
+    const numero = String(endereco.numero || '').trim();
+    const complemento = String(endereco.complemento || '').trim();
+
+    if (cep.length !== 8) return null;
+    if (!UFS.includes(estado)) return null;
+    if (!cidade || cidade.length > 100) return null;
+    if (!rua || rua.length > 150) return null;
+    if (!numero || numero.length > 20) return null;
+    if (complemento.length > 100) return null;
+
+    return {
+        cep,
+        estado,
+        cidade,
+        rua,
+        numero,
+        complemento: complemento || null
+    };
+}
+
 async function criarPedido(req, res) {
     let conexao;
 
     try {
-        const { endereco_id, itens, metodo } = req.body;
+        const {
+            endereco_id,
+            endereco,
+            itens,
+            metodo,
+            cartao_final
+        } = req.body;
 
-        if (!Number.isInteger(Number(endereco_id)) || Number(endereco_id) <= 0) {
-            return res.status(400).json({
-                erro: 'Informe um endereço válido.'
-            });
+        let enderecoPedido;
+        let enderecoId = null;
+
+        // ID vazio significa que o endereço é temporário.
+        const possuiEnderecoId =
+            endereco_id !== undefined &&
+            endereco_id !== null &&
+            String(endereco_id).trim() !== '';
+
+        if (possuiEnderecoId) {
+            enderecoId = Number(endereco_id);
+
+            if (!Number.isInteger(enderecoId) || enderecoId <= 0) {
+                return res.status(400).json({
+                    erro: 'Informe um endereço válido.'
+                });
+            }
+        } else {
+            enderecoPedido = validarEndereco(endereco);
+
+            if (!enderecoPedido) {
+                return res.status(400).json({
+                    erro: 'Informe um endereço de entrega completo e válido.'
+                });
+            }
         }
 
         if (!Array.isArray(itens) || itens.length === 0) {
@@ -39,6 +100,18 @@ async function criarPedido(req, res) {
             });
         }
 
+        let cartaoFinal = null;
+
+        if (metodo === 'cartao_credito' || metodo === 'cartao_debito') {
+            cartaoFinal = String(cartao_final || '');
+
+            if (!/^\d{4}$/.test(cartaoFinal)) {
+                return res.status(400).json({
+                    erro: 'Informe os quatro últimos dígitos do cartão de teste.'
+                });
+            }
+        }
+
         const produtosIds = new Set();
 
         for (const item of itens) {
@@ -63,21 +136,35 @@ async function criarPedido(req, res) {
         }
 
         conexao = await pool.getConnection();
-
         await conexao.beginTransaction();
 
-        const enderecos = await conexao.query(
-            `SELECT id FROM enderecos
-             WHERE id = ? AND usuario_id = ?`,
-            [Number(endereco_id), req.session.usuario.id]
-        );
+        // Busca o endereço no banco somente quando existe um ID.
+        if (enderecoId !== null) {
+            const enderecos = await conexao.query(
+                `SELECT id, cep, estado, cidade, rua, numero, complemento
+                 FROM enderecos
+                 WHERE id = ? AND usuario_id = ?`,
+                [enderecoId, req.session.usuario.id]
+            );
 
-        if (enderecos.length === 0) {
-            await conexao.rollback();
+            if (enderecos.length === 0) {
+                await conexao.rollback();
 
-            return res.status(404).json({
-                erro: 'Endereço não encontrado para este usuário.'
-            });
+                return res.status(404).json({
+                    erro: 'Endereço não encontrado para este usuário.'
+                });
+            }
+
+            const salvo = enderecos[0];
+
+            enderecoPedido = {
+                cep: salvo.cep,
+                estado: salvo.estado,
+                cidade: salvo.cidade,
+                rua: salvo.rua,
+                numero: salvo.numero,
+                complemento: salvo.complemento
+            };
         }
 
         let totalCentavos = 0;
@@ -113,9 +200,7 @@ async function criarPedido(req, res) {
                 });
             }
 
-            const precoCentavos = Math.round(
-                Number(produto.preco) * 100
-            );
+            const precoCentavos = Math.round(Number(produto.preco) * 100);
 
             totalCentavos += precoCentavos * item.quantidade;
 
@@ -129,13 +214,31 @@ async function criarPedido(req, res) {
 
         const valorTotal = (totalCentavos / 100).toFixed(2);
 
+        // Guarda uma cópia do endereço no pedido, mesmo que seja temporário.
         const resultadoPedido = await conexao.query(
             `INSERT INTO pedidos
-             (usuario_id, endereco_id, valor_total, status)
-             VALUES (?, ?, ?, 'pago')`,
+             (
+                usuario_id,
+                endereco_id,
+                endereco_cep,
+                endereco_rua,
+                endereco_numero,
+                endereco_complemento,
+                endereco_cidade,
+                endereco_estado,
+                valor_total,
+                status
+             )
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pago')`,
             [
                 req.session.usuario.id,
-                Number(endereco_id),
+                enderecoId,
+                enderecoPedido.cep,
+                enderecoPedido.rua,
+                enderecoPedido.numero,
+                enderecoPedido.complemento,
+                enderecoPedido.cidade,
+                enderecoPedido.estado,
                 valorTotal
             ]
         );
@@ -172,16 +275,17 @@ async function criarPedido(req, res) {
         }
 
         const codigoTransacao =
-            'TXN-' + crypto.randomUUID().toUpperCase();
+            'SIM-' + crypto.randomUUID().toUpperCase();
 
         await conexao.query(
             `INSERT INTO pagamentos
-             (pedido_id, metodo, status, valor, codigo_transacao)
-             VALUES (?, ?, 'aprovado', ?, ?)`,
+             (pedido_id, metodo, status, valor, cartao_final, codigo_transacao)
+             VALUES (?, ?, 'aprovado', ?, ?, ?)`,
             [
                 pedidoId,
                 metodo,
                 valorTotal,
+                cartaoFinal,
                 codigoTransacao
             ]
         );
@@ -203,6 +307,7 @@ async function criarPedido(req, res) {
                 status: 'pago',
                 metodo_pagamento: metodo,
                 codigo_transacao: codigoTransacao,
+                pagamento_simulado: true,
                 produtos: produtosPedido
             }
         });
@@ -225,7 +330,6 @@ async function criarPedido(req, res) {
     }
 }
 
-// Consultar histórico de pedidos do usuário
 async function consultarPedidos(req, res) {
     try {
         const usuarioId = req.session.usuario.id;
@@ -236,13 +340,13 @@ async function consultarPedidos(req, res) {
                 p.valor_total,
                 p.status,
                 p.criado_em,
-                e.cep,
-                e.rua,
-                e.numero,
-                e.cidade,
-                e.estado
+                p.endereco_cep AS cep,
+                p.endereco_rua AS rua,
+                p.endereco_numero AS numero,
+                p.endereco_complemento AS complemento,
+                p.endereco_cidade AS cidade,
+                p.endereco_estado AS estado
              FROM pedidos p
-             INNER JOIN enderecos e ON p.endereco_id = e.id
              WHERE p.usuario_id = ?
              ORDER BY p.criado_em DESC`,
             [usuarioId]
@@ -266,6 +370,7 @@ async function consultarPedidos(req, res) {
                     metodo,
                     status,
                     valor,
+                    cartao_final,
                     codigo_transacao,
                     criado_em
                  FROM pagamentos

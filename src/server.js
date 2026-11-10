@@ -18,7 +18,14 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
 
 // Proteções HTTP
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            'upgrade-insecure-requests': null
+        }
+    }
+}));
 
 // Leitura de requisições
 app.use(express.json());
@@ -86,6 +93,7 @@ app.use('/api/admin/dashboard', dashboardRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
+

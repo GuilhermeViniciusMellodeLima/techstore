@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "lab:start": "node scripts/lab-generator.js start",
+    "lab:stop": "node scripts/lab-generator.js stop",
+    "lab:status": "node scripts/lab-generator.js status"
   },
   "repository": {
     "type": "git",

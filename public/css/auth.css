@@ -626,3 +626,20 @@
 @media (max-width: 360px) {
   .auth-card { padding: 1.5rem 1rem; }
 }
+
+/* Correção de rolagem das páginas de autenticação */
+.auth-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.auth-main {
+  min-height: 100dvh;
+  box-sizing: border-box;
+}
+
+@media (max-height: 850px) {
+  .auth-main {
+    align-items: flex-start;
+  }
+}
